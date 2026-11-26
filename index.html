@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>选品观察助手</title>
+<style>
+  :root { --brand:#ff6a00; --ink:#1f2328; --muted:#656d76; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+         color: var(--ink); background:#fff; line-height:1.65; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  header { border-bottom: 1px solid #eaeef2; }
+  header .wrap { display:flex; align-items:center; gap:12px; height:68px; }
+  header img { width:36px; height:36px; border-radius:9px; }
+  header b { font-size:17px; }
+  .hero { padding: 72px 0 40px; }
+  .hero h1 { font-size: 34px; margin: 0 0 14px; letter-spacing:-.5px; }
+  .hero p.lead { font-size: 17px; color: var(--muted); margin: 0 0 28px; max-width: 620px; }
+  .cta { display:inline-block; background: var(--brand); color:#fff; text-decoration:none;
+         padding: 11px 22px; border-radius: 8px; font-weight: 600; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 18px; margin: 44px 0 8px; }
+  .card { border:1px solid #eaeef2; border-radius: 12px; padding: 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 15px; }
+  .card p { margin:0; color: var(--muted); font-size: 14px; }
+  section { padding: 40px 0; border-top: 1px solid #eaeef2; }
+  h2 { font-size: 20px; margin: 0 0 14px; }
+  ul { padding-left: 20px; color: var(--muted); }
+  footer { border-top:1px solid #eaeef2; padding: 28px 0 48px; color: var(--muted); font-size: 13px; }
+  code { background:#f6f8fa; padding:2px 6px; border-radius:5px; font-size:13px; }
+</style>
+</head>
+<body>
+<header><div class="wrap"><img src="icon.png" alt=""><b>选品观察助手</b></div></header>
+
+<div class="wrap hero">
+  <h1>把商品数据整理成能用的表</h1>
+  <p class="lead">面向个人选品场景的数据整理工具：按关键词汇总商品信息，保留价格与销量口径，输出可追溯的表格与图片资料。</p>
+  <a class="cta" href="#features">了解功能</a>
+</div>
+
+<div class="wrap">
+  <div class="grid" id="features">
+    <div class="card"><h3>按关键词归档</h3><p>每个关键词一份清单，保留排名、价格、销量文案与来源链接。</p></div>
+    <div class="card"><h3>明细可追溯</h3><p>规格、SKU 价格、库存与商品属性逐条留存，便于回溯核对。</p></div>
+    <div class="card"><h3>趋势可比较</h3><p>按日留存快照，用差值观察区间变化，而不是只看单日数字。</p></div>
+    <div class="card"><h3>资料本地化</h3><p>主图与详情图按商品归档到本地目录，便于整理与复盘。</p></div>
+  </div>
+</div>
+
+<section><div class="wrap">
+  <h2>数据来源与边界</h2>
+  <ul>
+    <li>数据来自多多客联盟开放接口，仅覆盖联盟库内的商品。</li>
+    <li>销量为平台展示口径，部分类目为区间值，不等同于结算数据。</li>
+    <li>工具仅做个人选品分析，不对外提供数据服务。</li>
+  </ul>
+</div></section>
+
+<section><div class="wrap">
+  <h2>联系方式</h2>
+  <p>问题反馈：<code>actionquick@users.noreply.github.com</code></p>
+</div></section>
+
+<footer><div class="wrap">© 2026 选品观察助手 · 个人项目，非商业服务</div></footer>
+</body>
+</html>
