@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数据查看 · 爆款雷达</title>
+<style>
+  :root { --ink:#1f2328; --muted:#656d76; --line:#eaeef2; --brand:#ff6a00; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+         color:var(--ink); background:#fff; }
+  header { border-bottom:1px solid var(--line); }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 20px; }
+  header .wrap { display:flex; align-items:center; gap:10px; height:58px; }
+  header img { width:26px; height:26px; border-radius:7px; }
+  header b { font-size:15px; }
+  header a { margin-left:auto; font-size:13px; color:var(--muted); text-decoration:none; }
+  .bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:16px 0; }
+  select, input { border:1px solid var(--line); border-radius:8px; padding:7px 10px; font-size:13px;
+                  color:var(--ink); background:#fff; outline:none; }
+  select:focus, input:focus { border-color:var(--brand); }
+  .tag { font-size:12px; color:var(--muted); }
+  table { width:100%; border-collapse:collapse; font-size:12.5px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th { color:var(--muted); font-weight:600; position:sticky; top:0; background:#fff; }
+  td.title { white-space:normal; max-width:420px; }
+  tr:hover td { background:#fafbfc; }
+  .empty { padding:60px 0; text-align:center; color:var(--muted); font-size:13px; }
+  .scroll { max-height:calc(100vh - 160px); overflow:auto; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <img src="./icon.png" alt=""><b>爆款雷达 · 数据</b>
+  <a href="./">返回首页</a>
+</div></header>
+
+<div class="wrap">
+  <div class="bar">
+    <select id="run"></select>
+    <input id="kw" placeholder="筛选标题 / 店铺" style="width:220px">
+    <span class="tag" id="stat"></span>
+  </div>
+  <div class="scroll"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+  <div class="empty" id="empty">加载中…</div>
+</div>
+
+<script>
+const COL = ["关键词","排名","标题","销量文案","拼单价","单买价","店铺","SKU数"];
+let rows = [];
+let all = [];
+
+const $ = (id) => document.getElementById(id);
+
+function cell(v) { return (v === undefined || v === null) ? "" : String(v); }
+
+function render() {
+  const q = $("kw").value.trim();
+  const list = q ? all.filter(r => (r["标题"]||"").includes(q) || (r["店铺"]||"").includes(q)) : all;
+  const thead = document.querySelector("#tbl thead");
+  const tbody = document.querySelector("#tbl tbody");
+  thead.innerHTML = "<tr>" + COL.map(c => "<th>" + c + "</th>").join("") + "</tr>";
+  tbody.innerHTML = list.map(r => "<tr>" + COL.map(c =>
+    "<td class=\"" + (c === "标题" ? "title" : "") + "\">" + cell(r[c]) + "</td>").join("") + "</tr>").join("");
+  $("stat").textContent = list.length + " 条";
+  $("empty").style.display = list.length ? "none" : "block";
+  $("empty").textContent = list.length ? "" : "没有匹配的数据";
+}
+
+async function loadRun(name) {
+  try {
+    const res = await fetch("./data/" + name);
+    all = await res.json();
+    render();
+  } catch (e) {
+    all = [];
+    $("empty").textContent = "读取 " + name + " 失败";
+  }
+}
+
+async function boot() {
+  try {
+    const idx = await (await fetch("./data/index.json", { cache: "no-store" })).json();
+    const sel = $("run");
+    sel.innerHTML = idx.runs.map(r => "<option value=\"" + r.file + "\">" + r.label + "（" + r.count + " 条）</option>").join("");
+    if (idx.runs.length) loadRun(idx.runs[0].file);
+    sel.onchange = () => loadRun(sel.value);
+  } catch (e) {
+    document.querySelector(".empty").textContent = "还没有发布过数据";
+  }
+}
+$("kw").oninput = render;
+boot();
+</script>
+</body>
+</html>
